@@ -28,6 +28,14 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const toggleReminder = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, reminder: !task.reminder } : task
+      )
+    );
+  };
+
   const editTask = (id) => {
     const taskToEdit = tasks.find((task) => task.id === id);
     const editedTask = {
@@ -45,7 +53,12 @@ function App() {
     <div className="container">
       <Header title="Task Tracker" />
       {tasks.length > 0 ? (
-        <Tasks editTask={editTask} deleteTask={deleteTask} tasks={tasks} />
+        <Tasks
+          toggleReminder={toggleReminder}
+          editTask={editTask}
+          deleteTask={deleteTask}
+          tasks={tasks}
+        />
       ) : (
         'No Tasks Available'
       )}

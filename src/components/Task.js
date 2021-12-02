@@ -1,8 +1,8 @@
 import TaskButtons from './TaskButtons';
 
-const Task = ({ task, deleteTask, editTask }) => {
+const Task = ({ task, deleteTask, editTask, toggleReminder }) => {
   return (
-    <div className="task">
+    <div className="task" onDoubleClick={() => toggleReminder(task.id)}>
       <div>
         <h3>
           {task.text}{' '}
