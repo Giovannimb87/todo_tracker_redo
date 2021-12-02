@@ -34,7 +34,11 @@ function App() {
       ...taskToEdit,
       text: window.prompt('Add new text here'),
     };
-    //? How do I edit a specific property?
+    const newData = [
+      ...tasks.filter((task) => task.id !== id),
+      editedTask,
+    ].sort((a, b) => a.id - b.id);
+    setTasks([...newData]);
   };
 
   return (
