@@ -9,7 +9,7 @@ const AddTask = ({ addTask }) => {
     e.preventDefault();
 
     if (!text || !day) {
-      alert('Please fill in required fields');
+      alert('Please fill all required fields');
       return;
     }
 

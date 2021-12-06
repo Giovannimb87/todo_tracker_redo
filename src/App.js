@@ -1,30 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
 
 function App() {
+  const [toggleFormDisplay, setToggleFormDisplay] = useState(false);
   const [id, setId] = useState(4);
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: 'This is a much longer text to test',
-      day: 'Day1',
-      reminder: true,
-    },
-    {
-      id: 2,
-      text: 'Text2',
-      day: 'Day2',
-      reminder: true,
-    },
-    {
-      id: 3,
-      text: 'Text3',
-      day: 'Day3',
-      reminder: true,
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const getTasks = async () => {
+      const tasksFromServer = await fetchTasks();
+      setTasks(tasksFromServer);
+    };
+
+    getTasks();
+  }, []);
+
+  // Fetch Task Data
+  const fetchTasks = async () => {
+    const res = await fetch('http://localhost:5000/tasks');
+    const data = await res.json();
+    return data;
+  };
+
+  // Toggle Form
+  const toggleForm = () => {
+    setToggleFormDisplay(!toggleFormDisplay);
+  };
 
   // Add Task
   const addTask = (task) => {
@@ -34,7 +37,11 @@ function App() {
   };
 
   // Delete Task
-  const deleteTask = (id) => {
+  const deleteTask = async (id) => {
+    await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'DELETE',
+    });
+
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
@@ -68,8 +75,12 @@ function App() {
 
   return (
     <div className="container">
-      <Header title="Task Tracker" />
-      <AddTask addTask={addTask} />
+      <Header
+        toggleForm={toggleForm}
+        isShowAddTask={toggleFormDisplay}
+        title="Task Tracker"
+      />
+      {toggleFormDisplay && <AddTask addTask={addTask} />}
       {tasks.length > 0 ? (
         <Tasks
           toggleReminder={toggleReminder}

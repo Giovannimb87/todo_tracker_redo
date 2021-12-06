@@ -1,14 +1,14 @@
 import Button from './Button';
 
-const Header = ({ title }) => {
-  const onClick = (e) => {
-    console.log(e);
-  };
-
+const Header = ({ title, toggleForm, isShowAddTask }) => {
   return (
     <header className="header">
       <h1>{title}</h1>
-      <Button text="Add" color="green" onClick={onClick} />
+      <Button
+        text={!isShowAddTask ? 'Add' : 'Close'}
+        color={!isShowAddTask ? 'green' : 'red'}
+        onClick={toggleForm}
+      />
     </header>
   );
 };
